@@ -1,0 +1,26 @@
+[
+  {
+    "seatNo": "20101",
+    "nationalId": "30805120102345",
+    "name": "محمود إبراهيم متولي",
+    "status": "منتظم",
+    "division": "",
+    "specialty": ""
+  },
+  {
+    "seatNo": "20102",
+    "nationalId": "30806220205678",
+    "name": "أحمد علي محمود",
+    "status": "خدمات",
+    "division": "",
+    "specialty": ""
+  },
+  {
+    "seatNo": "20103",
+    "nationalId": "30807150309012",
+    "name": "فاطمة محمد حسن",
+    "status": "منازل",
+    "division": "",
+    "specialty": ""
+  }
+]
