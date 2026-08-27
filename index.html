@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل شعبة الثانوية العامة - مدرسة نور العلم</title>
+    <style>
+        :root {
+            --primary: #1e3c72;
+            --secondary: #2a5298;
+            --accent: #ffb300;
+            --bg: #f0f4f8;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--text-color);
+            margin: 0;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3), 0 6px 10px rgba(0, 0, 0, 0.2);
+            box-sizing: border-box;
+        }
+
+        h2 {
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: 5px;
+            font-size: 1.4rem;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .author {
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--accent);
+            background: #333;
+            padding: 4px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            font-size: 0.95rem;
+            color: var(--primary);
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            box-sizing: border-box;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: #fafafa;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--secondary);
+            outline: none;
+            background: #fff;
+            box-shadow: 0 0 5px rgba(42, 82, 152, 0.3);
+        }
+
+        button {
+            background: linear-gradient(to bottom, #4facfe 0%, #00f2fe 100%);
+            color: #fff;
+            border: none;
+            padding: 14px;
+            font-size: 1.05rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            box-shadow: 0 5px 0 #008ba3, 0 8px 15px rgba(0,0,0,0.2);
+            transition: all 0.1s ease;
+            margin-top: 10px;
+        }
+
+        button:active {
+            transform: translateY(4px);
+            box-shadow: 0 1px 0 #008ba3, 0 3px 6px rgba(0,0,0,0.2);
+        }
+
+        .btn-admin {
+            background: linear-gradient(to bottom, #f7971e 0%, #ffd200 100%);
+            box-shadow: 0 5px 0 #c77400, 0 8px 15px rgba(0,0,0,0.2);
+        }
+        .btn-admin:active {
+            box-shadow: 0 1px 0 #c77400, 0 3px 6px rgba(0,0,0,0.2);
+        }
+
+        .btn-logout {
+            background: linear-gradient(to bottom, #ff5e62 0%, #ff9966 100%);
+            box-shadow: 0 5px 0 #b33639, 0 8px 15px rgba(0,0,0,0.2);
+        }
+        .btn-logout:active {
+            box-shadow: 0 1px 0 #b33639, 0 3px 6px rgba(0,0,0,0.2);
+        }
+
+        .btn-success {
+            background: linear-gradient(to bottom, #27ae60 0%, #2ecc71 100%);
+            box-shadow: 0 5px 0 #1a7a42, 0 8px 15px rgba(0,0,0,0.2);
+        }
+        .btn-success:active {
+            box-shadow: 0 1px 0 #1a7a42, 0 3px 6px rgba(0,0,0,0.2);
+        }
+
+        .info-box {
+            background: #eef2f7;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            border-right: 4px solid var(--secondary);
+        }
+
+        .hidden { display: none; }
+        .error { color: #e74c3c; font-size: 0.85rem; margin-top: 5px; text-align: center; font-weight: bold; }
+        .success { color: #27ae60; text-align: center; margin-top: 10px; font-weight: bold; }
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: var(--primary);
+            font-weight: bold;
+        }
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            z-index: 1000;
+            display: none;
+            font-weight: bold;
+            max-width: 90%;
+            text-align: center;
+        }
+        .toast.show {
+            display: block;
+            animation: fadeInUp 0.3s ease;
+        }
+        .toast.success { background: #27ae60; }
+        .toast.error { background: #e74c3c; }
+        .toast.warning { background: #f39c12; }
+        .toast.info { background: #3498db; }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+
+        .stats-box {
+            background: #f0f4f8;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-size: 0.85rem;
+            text-align: center;
+            border: 1px dashed #2a5298;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>اختيار الشعب وتخصصاتها</h2>
+    <div class="subtitle">مدرسة نور العلم الثانوية المشتركة</div>
+    <div class="author">تصميم مسيو حسن علي</div>
+
+    <!-- رسالة التحميل -->
+    <div id="loadingMessage" class="loading">⏳ جاري تحميل البيانات...</div>
+
+    <!-- خطوة تسجيل الدخول -->
+    <div id="loginSection" class="hidden">
+        <div class="form-group">
+            <label for="nationalIdInput">أدخل الرقم القومي:</label>
+            <input type="text" id="nationalIdInput" placeholder="أدخل الرقم القومي المكون من 14 رقماً">
+        </div>
+        <button onclick="checkLogin()">دخول</button>
+        <div id="loginError" class="error"></div>
+    </div>
+
+    <!-- واجهة الطالب -->
+    <div id="formSection" class="hidden">
+        <div class="info-box" id="studentInfo"></div>
+
+        <div class="form-group">
+            <label for="divisionSelect">اختر الشعبة:</label>
+            <select id="divisionSelect" onchange="updateSpecialties()">
+                <option value="">-- اختر الشعبة --</option>
+                <option value="الطب وعلوم الحياة">الطب وعلوم الحياة</option>
+                <option value="الهندسة وعلوم الحاسب">الهندسة وعلوم الحاسب</option>
+                <option value="الأعمال">الأعمال</option>
+                <option value="الآداب والفنون">الآداب والفنون</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="specialtySelect">اختر مادة التخصص:</label>
+            <select id="specialtySelect">
+                <option value="">-- اختر الشعبة أولاً --</option>
+            </select>
+        </div>
+
+        <button onclick="saveStudentData()">تأكيد وحفظ الاختيار</button>
+        <div id="successMsg" class="success"></div>
+    </div>
+
+    <!-- لوحة تحكم مدير المدرسة -->
+    <div id="adminSection" class="hidden">
+        <div class="info-box" style="background: #fff8e1; border-right-color: #f7971e; text-align: center; font-weight: bold;">
+            🏫 لوحة تحكم مدير المدرسة
+        </div>
+        
+        <div class="stats-box" id="statsBox">
+            جاري حساب الإحصائيات...
+        </div>
+        
+        <button class="btn-admin" onclick="downloadExcelWithChoices()">📥 تحميل كشف الإكسيل (مع الاختيارات)</button>
+        <button class="btn-success" onclick="viewAllChoices()">📊 عرض كل الاختيارات</button>
+        <button class="btn-logout" onclick="location.reload()">تسجيل خروج</button>
+    </div>
+</div>
+
+<!-- رسالة منبثقة -->
+<div id="toast" class="toast"></div>
+
+<script>
+    let studentsData = [];
+    let currentStudent = null;
+    const ADMIN_CODE = "admin123";
+    const STORAGE_KEY = 'noor_elalm_students';
+    const CHOICES_KEY = 'noor_elalm_choices'; // مفتاح منفصل لتخزين الاختيارات فقط
+
+    const specialtiesMap = {
+        "الطب وعلوم الحياة": ["الرياضيات", "الفيزياء"],
+        "الهندسة وعلوم الحاسب": ["الكيمياء", "البرمجة"],
+        "الأعمال": ["المحاسبة", "إدارة الأعمال"],
+        "الآداب والفنون": ["علم النفس", "اللغة الفرنسية"]
+    };
+
+    // عرض رسالة منبثقة
+    function showToast(message, type = 'success') {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.className = 'toast ' + type + ' show';
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 3500);
+    }
+
+    // دمج بيانات JSON مع الاختيارات المخزنة
+    function mergeChoicesWithData(jsonData) {
+        const savedChoices = localStorage.getItem(CHOICES_KEY);
+        if (savedChoices) {
+            try {
+                const choicesMap = JSON.parse(savedChoices);
+                // دمج الاختيارات مع بيانات JSON
+                jsonData.forEach(student => {
+                    const nationalId = student.nationalId;
+                    if (choicesMap[nationalId]) {
+                        student.division = choicesMap[nationalId].division || student.division || '';
+                        student.specialty = choicesMap[nationalId].specialty || student.specialty || '';
+                    }
+                });
+                console.log('✅ تم دمج الاختيارات المخزنة مع بيانات JSON');
+            } catch (e) {
+                console.error('خطأ في دمج الاختيارات:', e);
+            }
+        }
+        return jsonData;
+    }
+
+    // تحميل البيانات من JSON عند فتح الصفحة
+    window.onload = function() {
+        const loadingMsg = document.getElementById('loadingMessage');
+        const loginSection = document.getElementById('loginSection');
+        
+        fetch('data.json?' + new Date().getTime())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('ملف data.json غير موجود');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // دمج الاختيارات المخزنة مع بيانات JSON
+                studentsData = mergeChoicesWithData(data);
+                
+                // حفظ البيانات المدمجة في localStorage
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(studentsData));
+                
+                console.log('✅ تم تحميل البيانات من data.json:', studentsData.length, 'طالب');
+                console.log('📋 عدد الطلاب الذين سجلوا اختياراتهم:', studentsData.filter(s => s.division).length);
+                
+                loadingMsg.classList.add('hidden');
+                loginSection.classList.remove('hidden');
+                showToast('✅ تم تحميل البيانات بنجاح مع الاختيارات المحفوظة', 'success');
+            })
+            .catch(err => {
+                console.error('❌ خطأ:', err);
+                // محاولة استخدام localStorage
+                const savedData = localStorage.getItem(STORAGE_KEY);
+                if (savedData) {
+                    studentsData = JSON.parse(savedData);
+                    loadingMsg.textContent = '⚠️ تم تحميل البيانات من النسخة الاحتياطية';
+                    setTimeout(() => {
+                        loadingMsg.classList.add('hidden');
+                        loginSection.classList.remove('hidden');
+                        showToast('⚠️ تم تحميل البيانات من النسخة الاحتياطية', 'warning');
+                    }, 1000);
+                } else {
+                    loadingMsg.textContent = '❌ خطأ: لم يتم العثور على ملف data.json ولا توجد بيانات مخزنة';
+                    loadingMsg.style.color = '#e74c3c';
+                }
+            });
+    };
+
+    function checkLogin() {
+        const inputVal = document.getElementById('nationalIdInput').value.trim();
+        const errorDiv = document.getElementById('loginError');
+        
+        if (inputVal === ADMIN_CODE) {
+            document.getElementById('loginSection').classList.add('hidden');
+            document.getElementById('adminSection').classList.remove('hidden');
+            updateStats();
+            return;
+        }
+
+        currentStudent = studentsData.find(s => s.nationalId === inputVal);
+
+        if (currentStudent) {
+            errorDiv.textContent = "";
+            document.getElementById('loginSection').classList.add('hidden');
+            document.getElementById('formSection').classList.remove('hidden');
+
+            document.getElementById('studentInfo').innerHTML = `
+                <div><strong>اسم الطالب:</strong> ${currentStudent.name}</div>
+                <div><strong>رقم الجلوس:</strong> ${currentStudent.seatNo}</div>
+                <div><strong>الرقم القومي:</strong> ${currentStudent.nationalId}</div>
+                <div><strong>الحالة:</strong> ${currentStudent.status}</div>
+                ${currentStudent.division ? `<div style="color:#27ae60;font-weight:bold;">✅ تم الاختيار: ${currentStudent.division} - ${currentStudent.specialty}</div>` : ''}
+            `;
+
+            if (currentStudent.division) {
+                document.getElementById('divisionSelect').value = currentStudent.division;
+                updateSpecialties();
+                document.getElementById('specialtySelect').value = currentStudent.specialty;
+            }
+        } else {
+            errorDiv.textContent = "الرقم القومي غير صحيح أو غير مسجل بالنظام!";
+        }
+    }
+
+    function updateSpecialties() {
+        const division = document.getElementById('divisionSelect').value;
+        const specialtySelect = document.getElementById('specialtySelect');
+        
+        specialtySelect.innerHTML = '<option value="">-- اختر مادة التخصص --</option>';
+        
+        if (specialtiesMap[division]) {
+            specialtiesMap[division].forEach(spec => {
+                const opt = document.createElement('option');
+                opt.value = spec;
+                opt.textContent = spec;
+                specialtySelect.appendChild(opt);
+            });
+        }
+    }
+
+    // حفظ اختيار الطالب
+    function saveStudentData() {
+        const division = document.getElementById('divisionSelect').value;
+        const specialty = document.getElementById('specialtySelect').value;
+
+        if (!division || !specialty) {
+            alert('يرجى اختيار الشعبة ومادة التخصص أولاً!');
+            return;
+        }
+
+        // تحديث بيانات الطالب الحالي
+        currentStudent.division = division;
+        currentStudent.specialty = specialty;
+
+        // حفظ الاختيارات بشكل منفصل (للتذكر حتى لو تغير data.json)
+        const choicesMap = {};
+        studentsData.forEach(s => {
+            if (s.division) {
+                choicesMap[s.nationalId] = {
+                    division: s.division,
+                    specialty: s.specialty
+                };
+            }
+        });
+        localStorage.setItem(CHOICES_KEY, JSON.stringify(choicesMap));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(studentsData));
+
+        document.getElementById('successMsg').textContent = "✅ تم حفظ اختياراتك بنجاح!";
+        showToast('✅ تم حفظ اختياراتك بنجاح في المتصفح', 'success');
+        
+        setTimeout(() => {
+            location.reload();
+        }, 1500);
+    }
+
+    // تحديث إحصائيات المدير
+    function updateStats() {
+        const statsBox = document.getElementById('statsBox');
+        const total = studentsData.length;
+        const withChoices = studentsData.filter(s => s.division).length;
+        const withoutChoices = total - withChoices;
+        
+        statsBox.innerHTML = `
+            <strong>📊 إحصائيات الطلاب:</strong><br>
+            👨‍🎓 إجمالي الطلاب: ${total}<br>
+            ✅ سجلوا اختياراتهم: ${withChoices}<br>
+            ⏳ لم يسجلوا بعد: ${withoutChoices}
+        `;
+    }
+
+    // عرض كل الاختيارات (في تنبيه)
+    function viewAllChoices() {
+        const withChoices = studentsData.filter(s => s.division);
+        if (withChoices.length === 0) {
+            showToast('❌ لا يوجد طلاب سجلوا اختياراتهم بعد', 'error');
+            return;
+        }
+        
+        let message = '📋 قائمة الطلاب الذين سجلوا اختياراتهم:\n\n';
+        withChoices.forEach((s, i) => {
+            message += `${i+1}. ${s.name}\n   شعبة: ${s.division}\n   تخصص: ${s.specialty}\n\n`;
+        });
+        
+        // عرض في نافذة منبثقة
+        const win = window.open('', '_blank', 'width=500,height=400');
+        win.document.write(`
+            <html dir="rtl">
+            <head><title>قائمة الاختيارات</title>
+            <style>
+                body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
+                .student { background: white; padding: 10px; margin: 5px 0; border-radius: 5px; border-right: 4px solid #2a5298; }
+                .name { font-weight: bold; }
+                .detail { color: #555; }
+            </style>
+            </head>
+            <body>
+                <h2>📋 قائمة الطلاب الذين سجلوا اختياراتهم</h2>
+                <p>عددهم: ${withChoices.length} طالب</p>
+                ${withChoices.map((s, i) => `
+                    <div class="student">
+                        <div class="name">${i+1}. ${s.name}</div>
+                        <div class="detail">رقم الجلوس: ${s.seatNo}</div>
+                        <div class="detail">الشعبة: ${s.division}</div>
+                        <div class="detail">مادة التخصص: ${s.specialty}</div>
+                    </div>
+                `).join('')}
+                <button onclick="window.close()" style="margin-top:20px;padding:10px 20px;background:#2a5298;color:white;border:none;border-radius:5px;cursor:pointer;">إغلاق</button>
+            </body>
+            </html>
+        `);
+    }
+
+    // ============================================================
+    // الدالة الرئيسية: تحميل CSV مع دمج الاختيارات من localStorage
+    // ============================================================
+    function downloadExcelWithChoices() {
+        showToast('⏳ جاري تحميل البيانات مع الاختيارات...', 'info');
+        
+        // جلب البيانات من data.json
+        fetch('data.json?' + new Date().getTime())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('ملف data.json غير موجود');
+                }
+                return response.json();
+            })
+            .then(jsonData => {
+                // دمج الاختيارات المخزنة مع بيانات JSON
+                const mergedData = mergeChoicesWithData(jsonData);
+                
+                // تحديث studentsData بالبيانات المدمجة
+                studentsData = mergedData;
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(studentsData));
+                
+                // تحويل إلى CSV
+                let csvContent = "\uFEFFرقم الجلوس,الرقم القومي,اسم الطالب,الحالة,الشعبة,مادة التخصص\n";
+                
+                mergedData.forEach(s => {
+                    csvContent += `"${s.seatNo}","${s.nationalId}","${s.name}","${s.status}","${s.division || ''}","${s.specialty || ''}"\n`;
+                });
+
+                // تحميل الملف
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'كشف_الطلاب_مع_الاختيارات_' + new Date().toLocaleDateString('ar-EG') + '.csv';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                // تحديث الإحصائيات
+                updateStats();
+                
+                const withChoices = mergedData.filter(s => s.division).length;
+                showToast(`✅ تم تحميل الملف بنجاح! (${withChoices} طالب سجلوا اختياراتهم)`, 'success');
+                console.log('✅ تم تحميل CSV مع الاختيارات، عدد الطلاب:', mergedData.length, '، سجلوا:', withChoices);
+            })
+            .catch(err => {
+                console.error('❌ خطأ في تحميل data.json:', err);
+                // في حالة الفشل، استخدم البيانات المخزنة
+                const savedData = localStorage.getItem(STORAGE_KEY);
+                if (savedData) {
+                    const data = JSON.parse(savedData);
+                    let csvContent = "\uFEFFرقم الجلوس,الرقم القومي,اسم الطالب,الحالة,الشعبة,مادة التخصص\n";
+                    data.forEach(s => {
+                        csvContent += `"${s.seatNo}","${s.nationalId}","${s.name}","${s.status}","${s.division || ''}","${s.specialty || ''}"\n`;
+                    });
+                    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'كشف_الطلاب_نسخة_احتياطية.csv';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                    showToast('⚠️ تم تحميل الملف من النسخة الاحتياطية', 'warning');
+                } else {
+                    showToast('❌ خطأ: لا توجد بيانات للتحميل', 'error');
+                }
+            });
+    }
+
+    // دالة احتياطية للتوافق
+    function downloadExcel() {
+        downloadExcelWithChoices();
+    }
+</script>
+
+</body>
+</html>
